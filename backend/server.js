@@ -7,7 +7,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-// Test Route (pehle rakhna safe hota hai)
+// Test Route (check API)
 app.get('/', (req, res) => {
   res.send("API Running 🚀");
 });
@@ -16,8 +16,8 @@ app.get('/', (req, res) => {
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/tasks', require('./routes/task'));
 
-// ✅ PORT fix (Railway compatible)
-const PORT = process.env.PORT || 5000;
+// ✅ Railway PORT (IMPORTANT)
+const PORT = process.env.PORT;
 
 // ✅ MongoDB connect + server start
 mongoose.connect(process.env.MONGO_URI)
