@@ -7,23 +7,27 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected ✅"))
-  .catch(err => console.log(err));
+// Test Route (pehle rakhna safe hota hai)
+app.get('/', (req, res) => {
+  res.send("API Running 🚀");
+});
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/tasks', require('./routes/task'));
 
-// Test Route
-app.get('/', (req, res) => {
-  res.send("API Running 🚀");
-});
-
-// ✅ IMPORTANT FIX (PORT)
+// ✅ PORT fix (Railway compatible)
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// ✅ MongoDB connect + server start
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB Connected ✅");
+
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error("MongoDB Error ❌", err);
+  });
